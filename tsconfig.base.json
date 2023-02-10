@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mailstream/smtp": ["src/package/smtp/src/index.ts"]
+      "@mailstream/smtp": ["src/package/smtp/src/index.ts"],
+      "@mailstream/util": ["src/package/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

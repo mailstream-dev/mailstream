@@ -3,3 +3,4 @@
 
 nx run-many --all --target=lint;
 nx format:write
+npx lint-staged

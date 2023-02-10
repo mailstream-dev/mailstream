@@ -1,20 +1,22 @@
 import { Socket } from "net";
 
 class Response {
-  constructor(private socket: Socket, private encoding: string) {}
+  constructor(private socket: Socket, private encoding: BufferEncoding) {}
 
   send(code: number, message: string): Promise<void> {
-    return new Promise((resolve) =>
+    return new Promise((resolve, reject) =>
       this.socket.write(
         Buffer.from(`${code}- ${message}`, this.encoding),
         this.encoding,
-        resolve
+        (e) => (e ? reject(e) : resolve())
       )
     );
   }
 
-  end(code: number, messagge: string): Promise<void> {
+  async end(code: number, message: string): Promise<void> {
     await this.send(code, message);
-    this.socket.destroySoon();
+    this.socket.destroy();
   }
 }
+
+export default Response;
