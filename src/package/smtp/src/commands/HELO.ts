@@ -16,7 +16,10 @@ class HELO extends SMTPCommand {
 
     if (match && TypeUtil.isNonEmptyString(match?.[1])) {
       req.setRemoteHostName(match[1]);
-      res.send(250, `Hello ${match[1]}, nice seeing you!`);
+      res.send(
+        250,
+        `Hello ${match[1]} [${req.remoteAddress}], whatcha got for me?`
+      );
     }
 
     res.send(501, "Invalid Hostname");

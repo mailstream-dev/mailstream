@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-nx run-many --all --target=lint;
-nx format:write
+npm run lint;
 npx lint-staged

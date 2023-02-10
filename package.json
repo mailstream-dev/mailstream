@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "genLib": "nx generate @nrwl/js:library $NAME --publishable --importPath @/$NAME"
+    "genLib": "nx generate @nrwl/js:library $NAME --publishable --importPath @/$NAME",
+    "lint": "nx run-many --all --target=lint"
   },
   "private": true,
   "dependencies": {

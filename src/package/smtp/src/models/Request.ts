@@ -1,6 +1,9 @@
 class Request {
   private _remoteHostname = "";
-  constructor(private _encoding: BufferEncoding) {}
+  constructor(
+    private _encoding: BufferEncoding,
+    public remoteAddress: string
+  ) {}
 
   setEncoding(encoding: BufferEncoding) {
     this._encoding = encoding;
