@@ -10,20 +10,22 @@ class HELO extends SMTPCommand {
   }
 
   command(req: Request, res: Response): void {
-    const match = this.buffer
-      .toString()
-      .match(/^HELO ([a-z0-9\-.]{1,253})(?!\.)\b*$/m);
+    console.log(this.buffer.toString());
+
+    const match = this.buffer.toString().match(/^HELO ([a-z0-9\-.]{1,253})$/im);
 
     if (match && TypeUtil.isNonEmptyString(match?.[1])) {
       req.setRemoteHostName(match[1]);
       res.send(
         250,
-        `Hello ${match[1]} [${req.remoteAddress}], whatcha got for me?`
+        `Hello ${match[1]} [${req.remoteAddress}], whatcha got for me?`,
+        req.encoding
       );
+      return;
     }
 
-    res.send(501, "Invalid Hostname");
+    res.send(501, "Invalid Hostname", req.encoding);
   }
 }
 
-export default HELO;
+export default new HELO();
