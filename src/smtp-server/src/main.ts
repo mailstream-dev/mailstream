@@ -14,7 +14,6 @@ const options = {
     path.resolve(__dirname, "../../../local-assets/server-csr.pem")
   ),
   port: 8587,
-  useSSL: true,
 };
 
 new SMTPServer(console.log, options).listen(() => {

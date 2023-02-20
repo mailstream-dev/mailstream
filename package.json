@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.0.0",
     "observable-fns": "^0.6.1",
+    "prettier-plugin-jsdoc": "^0.4.2",
     "threads": "^1.7.0",
     "tslib": "^2.3.0"
   },
