@@ -5,9 +5,11 @@ class Response {
 
   send(code: number, message: string, encoding: BufferEncoding): Promise<void> {
     return new Promise((resolve, reject) =>
-      this.socket.write(`${code}- ${message}\r\n`, encoding, (e) =>
-        e ? reject(e) : resolve()
-      )
+      setImmediate(() => {
+        this.socket.write(`${code} - ${message}\r\n`, encoding, (e) =>
+          e ? reject(e) : resolve()
+        );
+      })
     );
   }
 

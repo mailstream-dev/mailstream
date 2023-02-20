@@ -105,3 +105,6 @@ dist
 
 #Mac OS Random Store
 .DS_Store
+
+local-assets/*
+tmp/**/*

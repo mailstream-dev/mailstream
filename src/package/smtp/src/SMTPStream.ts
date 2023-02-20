@@ -1,4 +1,4 @@
-import { Writable } from "stream";
+import { Writable, Readable } from "stream";
 import SMTPCommand from "./models/SMTPCommand";
 import repo from "./models/CommandRepository";
 import Response from "./models/Response";
@@ -13,15 +13,19 @@ interface State {
   buffer: Buffer;
 }
 
+const emptyMessage: MailObject = {
+  recipients: [],
+  from: null,
+  body: null,
+};
+
 class SMTPStream extends Writable {
   private _state: State = {
     buffer: Buffer.alloc(0),
-    message: {
-      recipients: [],
-      from: null,
-      body: null,
-    },
+    message: emptyMessage,
   };
+
+  private source: Readable = null;
 
   private get state(): State {
     return Object.freeze(this._state);
@@ -33,10 +37,18 @@ class SMTPStream extends Writable {
     writableOptions?: Record<string, unknown>
   ) {
     super(writableOptions);
+
+    this.on("pipe", (source) => {
+      this.source = source;
+    });
   }
 
   private setState(partial: Partial<State>) {
     this._state = { ...this.state, ...partial };
+  }
+
+  resume() {
+    this.source?.pipe(this);
   }
 
   override _write(
@@ -77,7 +89,10 @@ class SMTPStream extends Writable {
         ) || [];
 
       if (!command?.length) {
-        if (data.byteLength > Math.max(...repo.keys().map((k) => k.length))) {
+        if (
+          s.includes("\n") ||
+          data.byteLength > Math.max(...repo.keys().map((k) => k.length))
+        ) {
           return callback(
             new SMTPError(
               500,
@@ -102,19 +117,40 @@ class SMTPStream extends Writable {
         );
       }
 
+      if (!cmd.validState(this.state.message)) {
+        return callback(new SMTPError(503, "Precondition Failed", { command }));
+      }
+
       this.setState({ command: cmd });
     }
 
-    const readyForNextCommand = this.state.command.write(data);
+    const readyForNextCommand = this.state.command.write(
+      data,
+      this.req,
+      this.res
+    );
 
     if (readyForNextCommand) {
       const partial: Partial<MailObject> =
         this.state.command.call(this.req, this.res) || {};
-      this.setState({
-        command: null,
-        buffer: Buffer.alloc(0),
-        message: merge(this.state.message, partial),
-      });
+
+      const message = merge(this.state.message, partial);
+
+      if (this.state.command.shouldEmit) {
+        this.emit("email", message);
+
+        this.setState({
+          command: null,
+          buffer: Buffer.alloc(0),
+          message: emptyMessage,
+        });
+      } else {
+        this.setState({
+          command: null,
+          buffer: Buffer.alloc(0),
+          message,
+        });
+      }
     }
 
     return callback(null);

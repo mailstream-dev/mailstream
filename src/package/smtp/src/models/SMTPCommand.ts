@@ -7,11 +7,18 @@ type CommandResult = Partial<MailObject> | void;
 abstract class SMTPCommand {
   protected buffer: Buffer = Buffer.alloc(0);
 
+  public shouldEmit = false;
+
   constructor(public name: string, private terminator = "\r\n") {}
 
-  write(line: Buffer): boolean {
+  validState(currentObject: MailObject): boolean;
+  validState(): boolean {
+    return true;
+  }
+
+  write(line: Buffer, req: Request, res: Response): boolean {
     this.buffer = Buffer.concat([this.buffer, line]);
-    return line.toString().endsWith(this.terminator);
+    return this.buffer.toString().endsWith(this.terminator);
   }
 
   protected abstract command(req: Request, res: Response): CommandResult;
@@ -21,4 +28,5 @@ abstract class SMTPCommand {
   }
 }
 
+export { CommandResult };
 export default SMTPCommand;

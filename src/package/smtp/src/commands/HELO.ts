@@ -10,8 +10,6 @@ class HELO extends SMTPCommand {
   }
 
   command(req: Request, res: Response): void {
-    console.log(this.buffer.toString());
-
     const match = this.buffer.toString().match(/^HELO ([a-z0-9\-.]{1,253})$/im);
 
     if (match && TypeUtil.isNonEmptyString(match?.[1])) {
