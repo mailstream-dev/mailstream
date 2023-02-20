@@ -1,11 +1,12 @@
-import { Writable, Readable } from "stream";
-import SMTPCommand from "./models/SMTPCommand";
+import { Readable, Writable } from "stream";
+
 import repo from "./models/CommandRepository";
-import Response from "./models/Response";
+import MailObject, { merge } from "./models/MailObject";
 import Request from "./models/Request";
+import Response from "./models/Response";
+import SMTPCommand from "./models/SMTPCommand";
 import SMTPError from "./models/SMTPError";
 import "./SMTPWorker";
-import MailObject, { merge } from "./models/MailObject";
 
 interface State {
   command?: SMTPCommand;
@@ -130,27 +131,34 @@ class SMTPStream extends Writable {
       this.res
     );
 
-    if (readyForNextCommand) {
-      const partial: Partial<MailObject> =
-        this.state.command.call(this.req, this.res) || {};
+    try {
+      if (readyForNextCommand) {
+        const partial: Partial<MailObject> =
+          this.state.command.call(this.req, this.res) || {};
 
-      const message = merge(this.state.message, partial);
+        const message = merge(this.state.message, partial);
 
-      if (this.state.command.shouldEmit) {
-        this.emit("email", message);
+        if (this.state.command.shouldEmit) {
+          this.emit("email", message);
 
-        this.setState({
-          command: null,
-          buffer: Buffer.alloc(0),
-          message: emptyMessage,
-        });
-      } else {
-        this.setState({
-          command: null,
-          buffer: Buffer.alloc(0),
-          message,
-        });
+          this.setState({
+            command: null,
+            buffer: Buffer.alloc(0),
+            message: emptyMessage,
+          });
+        } else {
+          this.setState({
+            command: null,
+            buffer: Buffer.alloc(0),
+            message,
+          });
+        }
       }
+    } catch (e) {
+      if (e instanceof Error) {
+        return callback(e);
+      }
+      throw e;
     }
 
     return callback(null);

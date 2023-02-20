@@ -2,7 +2,7 @@ name: Nx Build
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
       - run: npm ci
 
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --configuration=ci
-      - run: npx nx affected --target=build --parallel=3
+      - run: npx nx format:check --base=master
+      - run: npx nx affected --base=master --target=lint --parallel=3
+      - run: npx nx affected --base=master --target=test --parallel=3 --configuration=ci
+      - run: npx nx affected --base=master --target=build --parallel=3
