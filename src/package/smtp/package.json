@@ -1,6 +1,6 @@
 {
   "name": "@mailstream/smtp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Lightweight SMTP Server for Programatic Reciept of Emails",
   "type": "commonjs",
   "keywords": [
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mailstream-dev/mailstream/tree/main/src/package/smtp"
+    "url": "https://github.com/mailstream-dev/mailstream/tree/master/src/package/smtp"
   },
   "author": {
     "name": "Zachary Tipnis"

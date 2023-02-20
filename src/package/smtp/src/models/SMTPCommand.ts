@@ -1,6 +1,6 @@
+import MailObject from "./MailObject";
 import Request from "./Request";
 import Response from "./Response";
-import MailObject from "./MailObject";
 
 type CommandResult = Partial<MailObject> | void;
 

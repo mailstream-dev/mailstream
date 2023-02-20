@@ -1,6 +1,6 @@
-import SMTPCommand from "../models/SMTPCommand";
 import Request from "../models/Request";
 import Response from "../models/Response";
+import SMTPCommand from "../models/SMTPCommand";
 
 class QUIT extends SMTPCommand {
   constructor() {

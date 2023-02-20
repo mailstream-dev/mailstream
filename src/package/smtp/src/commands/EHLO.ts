@@ -4,13 +4,13 @@ import Request from "../models/Request";
 import Response from "../models/Response";
 import SMTPCommand from "../models/SMTPCommand";
 
-class HELO extends SMTPCommand {
+class EHLO extends SMTPCommand {
   constructor() {
-    super("HELO");
+    super("EHLO");
   }
 
   command(req: Request, res: Response): void {
-    const match = this.buffer.toString().match(/^HELO ([a-z0-9\-.]{1,253})$/im);
+    const match = this.buffer.toString().match(/^EHLO ([a-z0-9\-.]{1,253})$/im);
 
     if (match && TypeUtil.isNonEmptyString(match?.[1])) {
       req.setRemoteHostName(match[1]);
@@ -19,6 +19,11 @@ class HELO extends SMTPCommand {
         `Hello ${match[1]} [${req.remoteAddress}], whatcha got for me?`,
         req.encoding
       );
+
+      req.plugins.map((p) => {
+        res.send(250, p, req.encoding);
+      });
+
       return;
     }
 
@@ -26,4 +31,4 @@ class HELO extends SMTPCommand {
   }
 }
 
-export default new HELO();
+export default new EHLO();

@@ -1,3 +1,5 @@
+import repo from "./CommandRepository";
+
 class Request {
   private _remoteHostname = "";
   constructor(
@@ -19,6 +21,10 @@ class Request {
 
   get remoteHostname(): string {
     return this._remoteHostname;
+  }
+
+  get plugins(): string[] {
+    return repo.plugins;
   }
 }
 

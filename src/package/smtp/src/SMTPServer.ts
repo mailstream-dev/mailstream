@@ -1,12 +1,11 @@
 import { createServer, Server, Socket } from "net";
-import { createServer as createSecureServer } from "tls";
 import { Observable } from "observable-fns";
+import { createServer as createSecureServer } from "tls";
 
-import SMTPCommand from "./models/SMTPCommand";
 import repo from "./models/CommandRepository";
-import Worker from "./SMTPWorker";
 import MailObject from "./models/MailObject";
 import SMTPPlugin from "./models/SMTPPlugin";
+import Worker from "./SMTPWorker";
 
 interface SMTPOptions {
   ip: string;

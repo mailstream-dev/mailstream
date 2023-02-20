@@ -1,13 +1,17 @@
 import { TypeUtil } from "@mailstream/util";
 
-import SMTPCommand from "../models/SMTPCommand";
+import MailObject from "../models/MailObject";
 import Request from "../models/Request";
 import Response from "../models/Response";
-import MailObject from "../models/MailObject";
+import SMTPCommand from "../models/SMTPCommand";
 
 class MAIL extends SMTPCommand {
   constructor() {
     super("RCPT TO:");
+  }
+
+  override validState(req: Request, currentObject: MailObject): boolean {
+    return Boolean(currentObject?.from?.length);
   }
 
   command(req: Request, res: Response): Partial<MailObject> {

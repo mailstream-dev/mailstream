@@ -1,6 +1,6 @@
-import SMTPCommand, { CommandResult } from "./SMTPCommand";
 import Request from "./Request";
 import Response from "./Response";
+import SMTPCommand, { CommandResult } from "./SMTPCommand";
 
 type CommandCallee = (req: Request, res: Response) => CommandResult;
 interface PluginCommandItem {

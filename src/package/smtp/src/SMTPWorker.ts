@@ -1,10 +1,11 @@
 import { Socket } from "net";
 import { Observable } from "observable-fns";
+
+import MailObject from "./models/MailObject";
 import Request from "./models/Request";
 import Response from "./models/Response";
-import SMTPStream from "./SMTPStream";
 import SMTPError from "./models/SMTPError";
-import MailObject from "./models/MailObject";
+import SMTPStream from "./SMTPStream";
 
 const repipe = (
   req: Request,
