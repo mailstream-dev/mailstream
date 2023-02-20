@@ -10,6 +10,10 @@ class MAIL extends SMTPCommand {
     super("RCPT TO:");
   }
 
+  override validState(req: Request, currentObject: MailObject): boolean {
+    return Boolean(currentObject?.from?.length);
+  }
+
   command(req: Request, res: Response): Partial<MailObject> {
     const match = this.buffer.toString().match(/^RCPT TO:([\w\W]*)\r\n$/i);
 

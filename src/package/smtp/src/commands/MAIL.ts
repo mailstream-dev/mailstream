@@ -10,6 +10,10 @@ class MAIL extends SMTPCommand {
     super("MAIL FROM:");
   }
 
+  override validState(req: Request): boolean {
+    return Boolean(req.remoteAddress?.length);
+  }
+
   command(req: Request, res: Response): Partial<MailObject> {
     const match = this.buffer.toString().match(/^MAIL FROM:([\w\W]*)\r\n$/i);
 
