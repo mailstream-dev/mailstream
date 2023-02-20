@@ -117,7 +117,7 @@ class SMTPStream extends Writable {
         );
       }
 
-      if (!cmd.validState(this.state.message)) {
+      if (!cmd.validState(this.req, this.state.message)) {
         return callback(new SMTPError(503, "Precondition Failed", { command }));
       }
 
