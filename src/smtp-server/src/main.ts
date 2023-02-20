@@ -17,6 +17,6 @@ const options = {
   useSSL: true,
 };
 
-new SMTPServer(options).listen(() => {
+new SMTPServer(console.log, options).listen(() => {
   console.log(`Listening on ${options.port}`);
 });

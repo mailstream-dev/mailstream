@@ -8,8 +8,6 @@ import Worker from "./SMTPWorker";
 import MailObject from "./models/MailObject";
 import SMTPPlugin from "./models/SMTPPlugin";
 
-type registerFn = (command: SMTPCommand) => void;
-
 interface SMTPOptions {
   ip: string;
   port: number;
@@ -29,7 +27,10 @@ class SMTPServer {
   private options: SMTPOptions;
   private server: Server;
 
-  constructor(options?: Partial<SMTPOptions>) {
+  constructor(
+    handler: (message: MailObject) => void,
+    options?: Partial<SMTPOptions>
+  ) {
     this.options = { ...defaultOptions, ...(options || {}) };
 
     this.options.plugins.forEach((p) => repo.register(p));
@@ -50,12 +51,8 @@ class SMTPServer {
 
     this.server.on(trackedEvent, async (socket: Socket) => {
       const observer: Observable<MailObject> = Worker(socket);
-      observer.subscribe(this.onEmail.bind(this));
+      observer.subscribe(handler.bind(this));
     });
-  }
-
-  onEmail(next: MailObject) {
-    console.log(next);
   }
 
   listen(callback?: () => void) {

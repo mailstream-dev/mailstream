@@ -16,6 +16,10 @@ abstract class SMTPCommand {
     return true;
   }
 
+  protected resetState() {
+    this.buffer = Buffer.alloc(0);
+  }
+
   write(line: Buffer, req: Request, res: Response): boolean {
     this.buffer = Buffer.concat([this.buffer, line]);
     return this.buffer.toString().endsWith(this.terminator);
@@ -24,7 +28,9 @@ abstract class SMTPCommand {
   protected abstract command(req: Request, res: Response): CommandResult;
 
   call(req: Request, res: Response): CommandResult {
-    return this.command(req, res);
+    const rslt = this.command(req, res);
+    this.resetState();
+    return rslt;
   }
 }
 
