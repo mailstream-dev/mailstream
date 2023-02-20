@@ -21,7 +21,7 @@ npm install @mailstream/smtp
 import { SMTPServer } from "@mailstream/smtp";
 
 new SMTPServer((e) => console.log(e)).listen(() => {
-	console.log(`Listening`);
+  console.log(`Listening`);
 });
 ```
 
@@ -71,18 +71,18 @@ import { SMTPPlugin } from "@mailstream/smtp";
 
 const PLUGIN_NAME = "TESTING";
 const PLUGIN_COMMANDS = [
-	{
-		name: "TEST",
-		action: (req, res) => {
-			res.send(200, "TEST is working!", req.encoding);
-		},
-	},
-	{
-		name: "FAIL",
-		action: (req, res) => {
-			res.send(500, "FAIL command reported error", req.encoding);
-		},
-	},
+  {
+    name: "TEST",
+    action: (req, res) => {
+      res.send(200, "TEST is working!", req.encoding);
+    },
+  },
+  {
+    name: "FAIL",
+    action: (req, res) => {
+      res.send(500, "FAIL command reported error", req.encoding);
+    },
+  },
 ];
 
 export default new SMTPPlugin(PLUGIN_NAME, PLUGIN_COMMANDS);
