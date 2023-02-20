@@ -1,22 +1,21 @@
 name: Publish to NPM
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
       - uses: actions/setup-node@v3
         with:
           node-version: "19.x"
           registry-url: "https://registry.npmjs.org"
           scope: "@mailstream"
-      - name: Install dependencies and build 🔧
-        run: npm ci && npx nx run-many --target=build
-      - name: Publish SMTP package on NPM 📦
-        run: npm publish
-        working-directory: "./src/package/smtp"
+      - name: Publish packages on NPM 📦
+        run: npx nx affected --target=lint --args="--ver=${{ github.event.release.tag_name }##*v} --tag=latest"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
