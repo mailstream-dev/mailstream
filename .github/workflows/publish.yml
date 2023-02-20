@@ -12,12 +12,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '19.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "19.x"
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies and build 🔧
-        run: npm ci && npm run build
+        run: npm ci && npx nx run-many --target=build
       - name: Publish SMTP package on NPM 📦
         run: npm publish
-        working-directory: './src/package/smtp'
+        working-directory: "./src/package/smtp"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
