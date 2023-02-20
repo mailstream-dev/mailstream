@@ -12,7 +12,7 @@ class DATA extends SMTPCommand {
 
   override shouldEmit = true;
 
-  override validState(currentObject: MailObject): boolean {
+  override validState(req: Request, currentObject: MailObject): boolean {
     return (
       Boolean(currentObject?.from?.length) &&
       Boolean(currentObject?.recipients?.filter(Boolean)?.length)
