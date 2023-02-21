@@ -5,7 +5,10 @@
   "type": "commonjs",
   "keywords": [
     "smtp",
-    "email"
+    "email",
+    "smtp-server",
+    "server",
+    "programatic email"
   ],
   "publishConfig": {
     "access": "public"
