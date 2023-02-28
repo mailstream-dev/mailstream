@@ -1,5 +1,8 @@
 {
   "name": "@mailstream/util",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "config": "^3.3.9"
+  }
 }

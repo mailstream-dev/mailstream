@@ -4,13 +4,15 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "genLib": "nx generate @nrwl/js:library $NAME --publishable --importPath @/$NAME",
+    "genLib": "nx generate @nrwl/js:library $NAME --publishable --importPath @mailstream/$NAME",
     "lint-changed": "nx affected --base=master --target=lint",
     "format": "nx format:write --base=master"
   },
   "private": true,
   "dependencies": {
     "axios": "^1.0.0",
+    "config": "^3.3.9",
+    "node-rdkafka": "^2.15.0",
     "observable-fns": "^0.6.1",
     "threads": "^1.7.0",
     "tslib": "^2.3.0"
@@ -22,7 +24,9 @@
     "@nrwl/js": "15.6.3",
     "@nrwl/linter": "15.6.3",
     "@nrwl/node": "15.7.1",
+    "@nrwl/react": "^15.8.1",
     "@nrwl/workspace": "15.6.3",
+    "@types/config": "^3.3.0",
     "@types/jest": "28.1.1",
     "@types/node": "18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.36.1",

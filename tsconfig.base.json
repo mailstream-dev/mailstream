@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@mailstream/config": ["src/package/config/src/index.ts"],
+      "@mailstream/kafka": ["src/package/kafka/src/index.ts"],
       "@mailstream/smtp": ["src/package/smtp/src/index.ts"],
       "@mailstream/util": ["src/package/util/src/index.ts"]
     }

@@ -22,6 +22,7 @@
       },
       "configurations": {
         "production": {
+          "generateLockfile": true,
           "esbuildOptions": {
             "sourcemap": false
           }
@@ -58,6 +59,15 @@
           "ci": true,
           "codeCoverage": true
         }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker build -f src/smtp-server/Dockerfile . -t smtp-server"
+        ]
       }
     }
   },
