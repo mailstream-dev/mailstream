@@ -1,0 +1,7 @@
+smtp:
+  port: 587
+  ip: 0.0.0.0
+
+ssl:
+  bucket: "ssl-certificates.mailstream.dev"
+  cf-access-token: ""
