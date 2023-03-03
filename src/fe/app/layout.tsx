@@ -8,12 +8,14 @@ import "./styles.css";
 const mavenPro = Maven_Pro({ subsets: ["latin"] });
 
 const CustomApp = ({ children }) => {
-  const { value: theme } = cookies().get("theme");
+  const { value: theme } = cookies().get("theme") || {};
 
   return (
     <html className={mavenPro.className}>
       <body>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme === "dark" ? "dark" : "light"}>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
