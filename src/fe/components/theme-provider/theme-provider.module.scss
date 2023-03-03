@@ -1,0 +1,121 @@
+@import "src/fe/shared/styles.scss";
+
+.light {
+  @include base($light0, $black);
+
+  :global(a, a:active, a:visited) {
+    color: $light-primary;
+  }
+
+  :global(*.secondary) {
+    @include base($light0, $dark1);
+  }
+  :global(*.tertiary) {
+    @include base($light0, $dark2);
+  }
+  :global(*.quartnary) {
+    @include base($light0, $dark3);
+  }
+  :global(*.primary) {
+    @include base($light-primary, $white);
+    @include button-gradient-bg($light-primary);
+  }
+  :global(*.error) {
+    @include base($light-error, $white);
+    @include button-gradient-bg($light-error);
+  }
+  :global(*.success) {
+    @include base($light-success, $white);
+    @include button-gradient-bg($light-success);
+  }
+  :global(*.warning) {
+    @include base($light-warning, $black);
+    @include button-gradient-bg($light-warning);
+  }
+
+  :global(input[type="text"]) {
+    @include input-gradient-bg($input-bg-light);
+    color: $dark0;
+  }
+
+  :global(input[type="text"]::placeholder) {
+    color: $dark2;
+  }
+}
+
+.dark {
+  @include base($dark0, $white);
+  :global(a, a:active, a:visited) {
+    color: $dark-primary;
+  }
+  :global(*.secondary) {
+    @include base($dark0, $light1);
+  }
+
+  :global(*.tertiary) {
+    @include base($dark0, $light2);
+  }
+
+  :global(*.quartnary) {
+    @include base($dark0, $light3);
+  }
+
+  :global(*.primary) {
+    @include base($dark-primary, $black);
+    @include button-gradient-bg($dark-primary);
+  }
+
+  :global(*.error) {
+    @include base($dark-error, $black);
+    @include button-gradient-bg($dark-error);
+  }
+
+  :global(*.success) {
+    @include base($dark-success, $black);
+    @include button-gradient-bg($dark-success);
+  }
+
+  :global(*.warning) {
+    @include base($dark-warning, $black);
+    @include button-gradient-bg($dark-warning);
+  }
+
+  :global(input[type="text"]) {
+    @include input-gradient-bg($input-bg-dark);
+    color: $light0;
+  }
+
+  :global(input[type="text"]::placeholder) {
+    color: $light2;
+  }
+}
+
+.light,
+.dark {
+  transition: background-color 0.5s;
+
+  button,
+  input[type="text"] {
+    border-radius: 0.8rem;
+    border-style: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-weight: 500;
+    min-height: 3.5em;
+    padding: 0 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  input[type="text"] + button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input[type="text"]:has(+ button) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
