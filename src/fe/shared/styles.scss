@@ -1,0 +1,63 @@
+$white: #fff;
+$black: #000;
+
+$light0: #c9c9c9;
+$light1: #b0b0b1;
+$light2: #979797;
+$light3: #7e7f7f;
+$light-primary: #282972;
+$light-error: #ca3636;
+$light-success: #377f3d;
+$light-warning: #faf183;
+$input-bg-light: #eee;
+
+$dark0: #363636;
+$dark1: #4f4f4f;
+$dark2: #686868;
+$dark3: #818181;
+$dark-primary: #767aba;
+$dark-error: #ca3636;
+$dark-success: #80c67e;
+$dark-warning: #faf183;
+$input-bg-dark: #333;
+
+@use "sass:color";
+
+@mixin base($bg, $color) {
+  background: radial-gradient(
+    circle,
+    color.adjust($bg, $lightness: +5%) 0%,
+    color.adjust($bg, $lightness: -5%) 100%
+  );
+  color: $color;
+  * {
+    color: $color;
+  }
+  :global(h1, h2, h3, h4, h5, h6) {
+    color: $color;
+    border-color: $color;
+  }
+  :global(a, a:active, a:visited) {
+    color: $color;
+  }
+}
+
+@mixin gradient-bg($dark, $mid, $light) {
+  background: radial-gradient(circle, $dark 0%, $mid 80%, $light 100%);
+}
+
+@mixin button-gradient-bg($bg) {
+  @include gradient-bg(
+    color.adjust($bg, $red: -5%, $green: -15%),
+    $bg,
+    color.adjust($bg, $red: +25%, $green: +10%)
+  );
+}
+
+@mixin input-gradient-bg($bg) {
+  @include gradient-bg(
+    color.adjust($bg, $lightness: +2%),
+    $bg,
+    color.adjust($bg, $lightness: -5%)
+  );
+}

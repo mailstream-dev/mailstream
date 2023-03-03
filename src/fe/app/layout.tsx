@@ -1,18 +1,27 @@
-import { AppProps } from "next/app";
-import Head from "next/head";
+import { Maven_Pro } from "@next/font/google";
+import { cookies } from "next/headers";
+
+import ThemeProvider from "../components/theme-provider/theme-provider";
+
 import "./styles.css";
 
-function CustomApp({ Component, pageProps }: AppProps) {
+const mavenPro = Maven_Pro({ subsets: ["latin"] });
+
+const CustomApp = ({ children }) => {
+  const { value: theme } = cookies().get("theme");
+
   return (
-    <>
-      <Head>
-        <title>Welcome to fe!</title>
-      </Head>
-      <main className="app">
-        <Component {...pageProps} />
-      </main>
-    </>
+    <html className={mavenPro.className}>
+      <body>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </body>
+    </html>
   );
-}
+};
+
+export const metadata = {
+  title: "Mailstream",
+  description: "Hello World! Mailstream is coming soon...",
+};
 
 export default CustomApp;
