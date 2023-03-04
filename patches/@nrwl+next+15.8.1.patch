@@ -1,0 +1,54 @@
+diff --git a/node_modules/@nrwl/next/plugins/with-nx.js b/node_modules/@nrwl/next/plugins/with-nx.js
+index 920749f..b48f5dd 100644
+--- a/node_modules/@nrwl/next/plugins/with-nx.js
++++ b/node_modules/@nrwl/next/plugins/with-nx.js
+@@ -30,12 +30,6 @@ function withNx(nextConfig = {}, context = getWithNxContext()) {
+     const userWebpack = nextConfig.webpack || ((x) => x);
+     const { nx } = nextConfig, validNextConfig = tslib_1.__rest(nextConfig, ["nx"]);
+     return Object.assign(Object.assign({ eslint: Object.assign({ ignoreDuringBuilds: true }, ((_a = validNextConfig.eslint) !== null && _a !== void 0 ? _a : {})) }, validNextConfig), { webpack: (config, options) => {
+-            /*
+-             * Update babel to support our monorepo setup.
+-             * The 'upward' mode allows the root babel.config.json and per-project .babelrc files to be picked up.
+-             */
+-            options.defaultLoaders.babel.options.babelrc = true;
+-            options.defaultLoaders.babel.options.rootMode = 'upward';
+             /*
+              * Modify the Next.js webpack config to allow workspace libs to use css modules.
+              * Note: This would be easier if Next.js exposes css-loader and sass-loader on `defaultLoaders`.
+diff --git a/node_modules/@nrwl/next/src/executors/build/build.impl.js b/node_modules/@nrwl/next/src/executors/build/build.impl.js
+index 54d1608..91a9654 100644
+--- a/node_modules/@nrwl/next/src/executors/build/build.impl.js
++++ b/node_modules/@nrwl/next/src/executors/build/build.impl.js
+@@ -44,6 +44,8 @@ function buildExecutor(options, context) {
+             (_e = process.env).__NEXT_REACT_ROOT || (_e.__NEXT_REACT_ROOT = 'true');
+         }
+         const config = yield (0, config_1.prepareConfig)(constants_1.PHASE_PRODUCTION_BUILD, options, context, dependencies, libsDir);
++        const next_cfg = require((0, path_1.join)(root, 'next.config.js'))
++
+         yield (0, build_1.default)(root, config);
+         if (!(0, fileutils_1.directoryExists)(options.outputPath)) {
+             (0, fs_extra_1.mkdir)(options.outputPath);
+@@ -62,6 +64,8 @@ function buildExecutor(options, context) {
+         }
+         (0, create_next_config_file_1.createNextConfigFile)(options, context);
+         (0, fs_extra_1.copySync)((0, path_1.join)(root, 'public'), (0, path_1.join)(options.outputPath, 'public'));
++        (0, fs_extra_1.copySync)((0, path_1.join)(root, next_cfg.distDir || '.next'), (0, path_1.join)(options.outputPath, next_cfg.distDir || '.next'));
++        next_cfg
+         return { success: true };
+     });
+ }
+diff --git a/node_modules/@nrwl/next/src/utils/config.js b/node_modules/@nrwl/next/src/utils/config.js
+index cd6046d..0a3d043 100644
+--- a/node_modules/@nrwl/next/src/utils/config.js
++++ b/node_modules/@nrwl/next/src/utils/config.js
+@@ -53,10 +53,6 @@ function prepareConfig(phase, options, context, dependencies, libsDir) {
+         const userNextConfig = getConfigEnhancer(options.nextConfig, context.root);
+         // Yes, these do have different capitalisation...
+         const outputDir = `${(0, devkit_1.offsetFromRoot)(options.root)}${options.outputPath}`;
+-        config.distDir =
+-            config.distDir && config.distDir !== '.next'
+-                ? (0, devkit_1.joinPathFragments)(outputDir, config.distDir)
+-                : (0, devkit_1.joinPathFragments)(outputDir, '.next');
+         config.webpack = (a, b) => createWebpackConfig(context.root, options.root, options.fileReplacements, options.assets, dependencies, libsDir)(userWebpack ? userWebpack(a, b) : a, b);
+         if (typeof userNextConfig !== 'function') {
+             throw new Error(`Module specified by 'nextConfig' option does not export a function. It should be of form 'module.exports = (phase, config, options) => config;'`);
