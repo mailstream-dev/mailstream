@@ -37,6 +37,18 @@
         }
       }
     },
+    "deploy": {
+      "executor": "@mailstream/nx-plugin-ecr:deploy",
+      "defaultConfiguration": "development",
+      "options": {
+        "root": "src/fe",
+        "awsRegion": "us-east-1"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
